@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Switch, Route, Redirect, BrowserRouter } from 'react-router-dom';
+import { Container } from '@material-ui/core';
+
+import { CustomProvider } from './theme';
+import { Navbar } from './components/Navbar';
+import { Repos } from './components/Repos';
+import { Home } from './components/Home';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { LoginCallback } from './components/LoginCallback';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <CustomProvider>
+        <Navbar />
+        <Container>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/login/callback" component={LoginCallback} />
+            <ProtectedRoute path="/repos" component={Repos} />
+            <Redirect to="/" />
+          </Switch>
+        </Container>
+      </CustomProvider>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
