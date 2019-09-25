@@ -27,8 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve-watch": "npm run start & nodemon --watch server --exec babel-node",
-    "serve": "npm run start & server --exec babel-node"
+    "serve": "nodemon --watch . ./server.js --exec babel-node"
   },
   "eslintConfig": {
     "extends": [

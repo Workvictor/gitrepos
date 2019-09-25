@@ -5,7 +5,7 @@ const savedToken = window.localStorage.getItem('token');
 
 interface IAuth {
   isAuthenticated: boolean;
-  login: () => Promise<void>;
+  login: (code: string, redirectUrl?: string) => Promise<void>;
 }
 
 const initialState = {
@@ -15,28 +15,40 @@ const initialState = {
 
 const Auth = createContext<IAuth>(initialState);
 
-export const saveToken = (token: string) =>
+const saveToken = (token: string) =>
   window.localStorage.setItem('token', token);
 
 export const useAuth = () => useContext(Auth);
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [state, setState] = useState<IAuth>(initialState);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    Boolean(savedToken)
+  );
 
-  const login = (code: string) => {
+  useEffect(() => {
+    if (savedToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
+    }
+  }, []);
+
+  const login = (code: string, redirectUrl?: string) =>
     axios
       .post<{ token: string }>('/api/code', { code })
       .then(({ data: { token } }) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        axios.get('https://api.github.com/user/repos').then(r => {
-          console.log(r);
-        });
+        saveToken(token);
+        setIsAuthenticated(true);
+        redirectUrl && window.location.replace(redirectUrl);
       });
-  }
 
-  useEffect(()=>{
-    saveToken(state.)
-  }, [state])
-
-  return <Auth.Provider value={state}>{children}</Auth.Provider>;
+  return (
+    <Auth.Provider
+      value={{
+        isAuthenticated,
+        login
+      }}
+    >
+      {children}
+    </Auth.Provider>
+  );
 };

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 
-import { useAuth0 } from '../AuthWrapper';
+import { useAuth } from '../Auth';
 
 export const ProtectedRoute = (props: RouteProps) => {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth();
   return isAuthenticated ? (
     <Route {...props} />
   ) : (

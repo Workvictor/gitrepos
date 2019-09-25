@@ -11,8 +11,6 @@ import { Link } from 'react-router-dom';
 
 import { useAuth } from '../Auth';
 import { useThemeSwitcher } from '../../theme/CustomProvider';
-import { Avatar } from '../layout/Avatar';
-import { LoginButton } from '../LoginButton/LoginButton';
 
 const StyledAppBar = styled(AppBar)`
   &&& {
@@ -23,7 +21,7 @@ const StyledAppBar = styled(AppBar)`
 `;
 
 export const Navbar = () => {
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const { switchThemeType, themeType } = useThemeSwitcher();
 
@@ -46,12 +44,7 @@ export const Navbar = () => {
             }
             label={`${themeType} theme`}
           />
-          {user && (
-            <Box ml={2} display="flex" alignItems="center">
-              <LoginButton /> <Avatar image={user.picture} />
-              {user.nickname}
-            </Box>
-          )}
+          {isAuthenticated && <div>logged in</div>}
         </Toolbar>
       </StyledAppBar>
       <Toolbar />
