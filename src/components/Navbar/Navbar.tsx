@@ -29,6 +29,7 @@ export const Navbar = () => {
     <>
       <StyledAppBar color="inherit">
         <Toolbar>
+          <Box mr={2}>{isAuthenticated && <div>logged in</div>}</Box>
           <Box mr={2}>
             <Link to="/">go to home</Link>
           </Box>
@@ -44,7 +45,6 @@ export const Navbar = () => {
             }
             label={`${themeType} theme`}
           />
-          {isAuthenticated && <div>logged in</div>}
         </Toolbar>
       </StyledAppBar>
       <Toolbar />

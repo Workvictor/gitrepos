@@ -4,6 +4,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `npm serve`
+## step 0
+### `yarn`
+install dependencies
 
-Run server (3001) and app (3000)
+## step 1
+### `npm serve`
+Run proxy server (3001)
+
+## step 2
+### `npm start`
+Run App (3000)

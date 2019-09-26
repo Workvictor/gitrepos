@@ -10,7 +10,7 @@ export const LoginCallback: React.FC = () => {
     if (!isAuthenticated) {
       const code =
         new URLSearchParams(window.location.search).get('code') || '';
-      login(code, '/');
+      login(code);
     }
   }, [isAuthenticated, login]);
 

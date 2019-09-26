@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+
+import { api } from '../api';
 
 const savedToken = window.localStorage.getItem('token');
 
@@ -25,21 +26,21 @@ export const AuthProvider: React.FC = ({ children }) => {
     Boolean(savedToken)
   );
 
+  const [pending, setPending] = useState(true);
+
   useEffect(() => {
     if (savedToken) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
+      api.setToken(savedToken);
     }
+    setPending(false);
   }, []);
 
   const login = (code: string, redirectUrl?: string) =>
-    axios
-      .post<{ token: string }>('/api/code', { code })
-      .then(({ data: { token } }) => {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        saveToken(token);
-        setIsAuthenticated(true);
-        redirectUrl && window.location.replace(redirectUrl);
-      });
+    api.getToken(code).then(token => {
+      saveToken(token);
+      setIsAuthenticated(true);
+      redirectUrl && window.location.replace(redirectUrl);
+    });
 
   return (
     <Auth.Provider
@@ -48,7 +49,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         login
       }}
     >
-      {children}
+      {pending ? null : children}
     </Auth.Provider>
   );
 };

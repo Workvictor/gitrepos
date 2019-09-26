@@ -1,6 +1,5 @@
 import express from "express";
 import { createServer } from "http";
-import path from "path";
 import bodyParser from "body-parser";
 import axios from "axios";
 
@@ -11,16 +10,8 @@ const app = express();
 const server = createServer(app);
 const jsonParser = bodyParser.json();
 
-const client = path.join(__dirname, "./build", "index.html");
-
 server.listen(PORT, HOST, () => {
   console.log(`Server running at http://${HOST}:${PORT}/`);
-});
-
-app.use(express.static(path.join(__dirname, "./build")));
-
-app.get(`*`, (req, res) => {
-  res.sendFile(client);
 });
 
 app.post("/api/code", jsonParser, (req, res) => {
